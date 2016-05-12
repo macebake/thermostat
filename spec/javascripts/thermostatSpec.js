@@ -1,3 +1,6 @@
+'use strict';
+
+
 describe('Thermostat', function() {
 
   var thermostat;
@@ -14,6 +17,11 @@ describe('Thermostat', function() {
     expect(thermostat.powerSavingMode).toBeTruthy();
   });
 
+  it('turns power saving mode off', function(){
+    thermostat.switchPowerSavingModeOff();
+    expect(this.powerSavingMode).toBeFalsy();
+  });
+
   it('has a max temp of 25C when power saving mode is on', function() {
     expect(thermostat.maxTemp()).toEqual(25);
   });
@@ -23,11 +31,12 @@ describe('Thermostat', function() {
   });
 
   it('has a max temp of 32C when power saving mode is off', function() {
-    thermostat.switchPowerSavingMode();
+    thermostat.switchPowerSavingModeOff();
     expect(thermostat.maxTemp()).toEqual(32);
   });
 
   it('increases temperature by 3C with increaseTemp', function() {
+    thermostat.resetTemp();
     thermostat.increaseTemp(3);
     expect(thermostat.temp).toEqual(23);
   });
@@ -62,7 +71,7 @@ describe('Thermostat', function() {
 
   it('displays red if temperature exceeds 25C', function(){
     spyOn(thermostat, 'maxTemp').and.returnValue(32);
-    thermostat.increaseTemp(10);
+    thermostat.increaseTemp(7);
     expect(thermostat.colorDisplay()).toEqual('Red');
   });
 
